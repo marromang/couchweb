@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Dashboard</title>
+  <title>  | couchWeb | </title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -69,3 +69,49 @@
               </span>
         </div>
       </form>
+      <!-- /.search form -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">MENÚ PRINCIPAL</li>
+        <li class="active treeview menu-open">
+          <a href="monitorizacion">
+            <i class="fa fa-dashboard"></i> <span>Métrica</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="http://jarvis.maria.org/icingaweb2"><i class="fa fa-circle-o"></i> Icinga</a></li>
+            <li class="active"><a href="http://jarvis.maria.org/grafana"><i class="fa fa-circle-o"></i> Grafana</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="backups">
+            <i class="fa fa-files-o"></i>
+            <span>Copias de seguridad</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="static/backups/program.tpl"><i class="fa fa-circle-o"></i> Programar </a></li>
+            <li><a href="static/backups/restore.tpl"><i class="fa fa-circle-o"></i> Restaurar </a></li>
+            <li><a href="static/backups/status.tpl"><i class="fa fa-circle-o"></i> Estados</a></li>
+            <li><a href="static/backups/pending.tpl"><i class="fa fa-circle-o"></i> Pendientes</a></li>
+          </ul>
+          <a href="pages/calendar.html">
+            <i class="fa fa-calendar"></i> <span>Calendar</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+        <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
+        <li class="header">LABELS</li>
+        <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
+        <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
+        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>

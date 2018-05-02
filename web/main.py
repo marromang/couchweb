@@ -19,9 +19,20 @@ app = SessionMiddleware(app(), session_opts)
 def inicio():
 	return template('index.tpl')
 
+
+@route('/monitorizacion')
+def inicio():
+	return template('monitorizacion.tpl')
+
+
+@route('/backups')
+def inicio():
+	return template('backups.tpl')
+
+
 @route('/static/<filepath:path>')
 def server_static(filepath):
     return static_file(filepath, root='static')  
 
-run(host='172.16.103.45',port=8080)
+run(host='192.168.101.42',port=8080)
 
