@@ -54,7 +54,7 @@
           <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
+          <p>{{  usuario }}</p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -73,44 +73,11 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MENÚ PRINCIPAL</li>
-        <li class="active treeview menu-open">
-          <a href="monitorizacion">
-            <i class="fa fa-dashboard"></i> <span>Métrica</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="http://jarvis.maria.org/icingaweb2"><i class="fa fa-circle-o"></i> Icinga</a></li>
-            <li class="active"><a href="http://jarvis.maria.org/grafana"><i class="fa fa-circle-o"></i> Grafana</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="backups">
-            <i class="fa fa-files-o"></i>
-            <span>Copias de seguridad</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="static/backups/program.tpl"><i class="fa fa-circle-o"></i> Programar </a></li>
-            <li><a href="static/backups/restore.tpl"><i class="fa fa-circle-o"></i> Restaurar </a></li>
-            <li><a href="static/backups/status.tpl"><i class="fa fa-circle-o"></i> Estados</a></li>
-            <li><a href="static/backups/pending.tpl"><i class="fa fa-circle-o"></i> Pendientes</a></li>
-          </ul>
-          <a href="pages/calendar.html">
-            <i class="fa fa-calendar"></i> <span>Calendar</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-        </li>
-        <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
-        <li class="header">LABELS</li>
-        <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+        <li class="treeview-menu">
+	<li><a href="/"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
+	<li><a href="/backups"><i class="fa fa-file"></i> <span>Copias de seguridad</span></a></li>
+	<li><a href="/metrica"><i class="fa fa-dashboard"></i> <span>Metricas</span></a></li>
+	<li><a href="/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
