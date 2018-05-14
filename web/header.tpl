@@ -49,15 +49,15 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <!-- Sidebar user panel -->
-      <div class="user-panel">
+ <div class="user-panel">
         <div class="pull-left image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+		<img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt=".">
         </div>
         <div class="pull-left info">
-          <p>{{  usuario }}</p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          <p>Maria</p>
         </div>
       </div>
+
       <!-- search form -->
       <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
