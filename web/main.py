@@ -15,19 +15,19 @@ def inicio():
 	return template('index.tpl', usuario=usuario, active=active)
 
 
-@route('/monitorizacion')
+@route('/metrica')
 def inicio():
-	return template('monitorizacion.tpl')
+	return template('static/pages/monitorizacion.tpl', usuario=usuario)
 
 
 @route('/backups')
 def inicio():
-	return template('backups.tpl')
+	return template('static/pages/backups/backups.tpl', usuario=usuario)
 
 
 @route('/docs')
 def inicio():
-        return template('docs.tpl')
+        return template('static/pages/docs.tpl', usuario=usuario)
 
 @route('/static/<filepath:path>')
 def server_static(filepath):
