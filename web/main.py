@@ -5,6 +5,7 @@ import requests
 from sys import argv
 import os
 import getpass
+import psutil
 
 usuario = getpass.getuser()
 
@@ -19,6 +20,9 @@ def inicio():
 def inicio():
 	return template('static/pages/monitorizacion.tpl', usuario=usuario)
 
+@route('/stark')
+def inicio():
+	return template('static/pages/monit-stark.tpl', usuario=usuario)
 
 @route('/backups')
 def inicio():
