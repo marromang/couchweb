@@ -11,12 +11,7 @@ usuario = getpass.getuser()
 
 active = 0
 
-def bytes2human(n):
-    # http://code.activestate.com/recipes/578019
-    # >>> bytes2human(10000)
-    # '9.8K'
-    # >>> bytes2human(100001221)
-    # '95.4M'
+def human(n):
     symbols = ('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y')
     prefix = {}
     for i, s in enumerate(symbols):
@@ -34,9 +29,16 @@ def inicio():
 
 @route('/metrica')
 def inicio():
-	mem = psutil.virtual_memory()
-	avail = bytes2human(mem.available)
-	return template('static/pages/monitorizacion.tpl', usuario=usuario, avail=avail)
+	ram = psutil.virtual_memory()
+	ramTotal = human(ram.total)
+	ramAvail = human(ram.available)
+	ramPerc = ram.percent
+	disk = psutil.disk_usage('/')
+	diskTotal = human(disk.total)
+	diskAvail = human(disk.used)
+	diskPerc = disk.percent
+	cpu = psutil.cpu_percent(interval=None)
+	return template('static/pages/monitorizacion.tpl', usuario=usuario, diskPerc = diskPerc, ramPerc = ramPerc, diskTotal=diskTotal, diskAvail=diskAvail, ramAvail=ramAvail, ramTotal=ramTotal, cpu=cpu)
 	
 @route('/stark')
 def inicio():
