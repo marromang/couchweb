@@ -8,6 +8,10 @@
 		<a class="btn bg-purple" href=" ">Grafana</a>
 		<a class="btn bg-blue" href="stark">Resumen</a>
 	</p>
+	<p>
+		<a class="btn bg-maroon" href=" ">{{ avail }}</a>
+
+	</p>
 </div>
 </section>
 </div>
