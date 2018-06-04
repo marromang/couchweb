@@ -49,35 +49,34 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <!-- Sidebar user panel -->
- <div class="user-panel">
-        <div class="pull-left image">
-		<img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt=" ">
-        </div>
-        <div class="pull-left info">
-          <p>{{ usuario }}</p>
-        </div>
-	</br>
-      </div>
+	 <div class="user-panel">
+        	<div class="pull-left image">
+			<img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt=" ">
+        	</div>
+        	<div class="pull-left info">
+          		<p>{{ usuario }}</p>
+        	</div>
+		</br>
+      	</div>
 
       <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-          <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
-                  <i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form>
+      	<form action="#" method="get" class="sidebar-form">
+        	<div class="input-group">
+          		<input type="text" name="q" class="form-control" placeholder="Search...">
+          		<span class="input-group-btn">
+               	 		<button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                  			<i class="fa fa-search"></i>
+                		</button>
+              		</span>
+        	</div>
+      	</form>
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MENÚ PRINCIPAL</li>
-        <li class="treeview-menu">
-	<li><a href="/"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
-	<li><a href="/backups"><i class="fa fa-file"></i> <span>Copias de seguridad</span></a></li>
-	<li><a href="/metrica"><i class="fa fa-dashboard"></i> <span>Metricas</span></a></li>
+	<li><a href="/"><i class="fa fa-home"></i><span>Inicio</span></a></li>
+	<li><a href="/backups"><i class="fa fa-file"></i><span>Copias de seguridad</span></a>
+	<li><a href="/metrica"><i class="fa fa-book"></i> <span>Metrica</span></a></li>
 	<li><a href="/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
       </ul>
     </section>

@@ -27,7 +27,7 @@ def inicio():
 	return template('index.tpl', usuario=usuario, active=active)
 
 
-@route('/metrica')
+@route('/jarvis')
 def inicio():
 	ram = psutil.virtual_memory()
 	ramTotal = human(ram.total)
@@ -38,11 +38,12 @@ def inicio():
 	diskAvail = human(disk.used)
 	diskPerc = disk.percent
 	cpu = psutil.cpu_percent(interval=None)
-	return template('static/pages/monitorizacion.tpl', usuario=usuario, diskPerc = diskPerc, ramPerc = ramPerc, diskTotal=diskTotal, diskAvail=diskAvail, ramAvail=ramAvail, ramTotal=ramTotal, cpu=cpu)
+	return template('static/pages/monit-jarvis.tpl', usuario=usuario, diskPerc = diskPerc, ramPerc = ramPerc, diskTotal=diskTotal, diskAvail=diskAvail, ramAvail=ramAvail, ramTotal=ramTotal, cpu=cpu)	
 	
-@route('/stark')
+@route('/metrica')
 def inicio():
-	return template('static/pages/monit-stark.tpl', usuario=usuario)
+	return template('static/pages/monitorizacion.tpl', usuario=usuario)
+
 
 @route('/backups')
 def inicio():
