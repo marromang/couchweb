@@ -11,12 +11,12 @@ import psutil
 usuario = getpass.getuser()
 
 #conexion a couchbase
-from couchbase.cluster import Cluster
-from couchbase.cluster import PasswordAuthenticator
-cluster = Cluster('couchbase://localhost')
-authenticator = PasswordAuthenticator('username', 'password')
-cluster.authenticate(authenticator)
-bucket = cluster.open_bucket('bucket-name')
+#from couchbase.cluster import Cluster
+#from couchbase.cluster import PasswordAuthenticator
+#cluster = Cluster('couchbase://localhost')
+#authenticator = PasswordAuthenticator('username', 'password')
+#cluster.authenticate(authenticator)
+#bucket = cluster.open_bucket('bucket-name')
 
 def human(n):
     symbols = ('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y')
@@ -82,12 +82,34 @@ def inicio():
 		cad="cbbackup http://"+ip+":8091 /backups -u Admin -p pass -b "+bucket
 	else:
 		cad="cbbackup http://"+ip+":8091 /backups -u Admin -p pass"
-        return template('static/pages/backups/nuevo2.tpl', usuario=usuario, cad=cad)
+	 
+      	return template('static/pages/backups/nuevo2.tpl', usuario=usuario, cad=cad)
 
 
-@route('/programar')
+@route('/restaurar')
 def inicio():
-        return template('static/pages/backups/programar.tpl', usuario=usuario)
+        return template("static/pages/backups/restaurar.tpl", usuario=usuario)
+
+@route('/restaurar2', method='post')
+def inicio():
+        
+   	host = request.forms.get('host')
+       	directorio = request.forms.get('dir')
+        origen = request.forms.get('origen')
+        destino = request.forms.get('destino')
+
+        if host == 'stark':
+                ip = '172.22.200.101'
+        else:
+                ip = '172.22.200.103'
+
+        if not destino:
+        	cad = "cbrestore ~/backups http://"+ip+":8091 -b "+origen
+        elif dir:
+                cad="cbrestore /backup/"+directorio+" http://Admin:pass@"+ip+":8091 --bucket-source="+origen
+                if destino:
+                	cad = cad+" --bucket-destination="+destino
+	return template('static/pages/backups/restaurar2.tpl', usuario=usuario, cad=cad)
 
 @route('/eliminar')
 def inicio():

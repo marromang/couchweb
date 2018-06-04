@@ -37,9 +37,9 @@
 </div>
         <p>
                 <a class="btn bg-maroon" href="/nuevo">Nueva copia</a>
-                <a class="btn bg-purple" href="static/pages/backups/programar.tpl">Programar copia</a>
-                <a class="btn bg-blue" href="static/pages/backups/eliminar.tpl">Eliminar copia</a>
-                <a class="btn bg-orange" href="static/pages/backups/restaurar.tpl">Restaurar copia</a>
+                <a class="btn bg-purple" href="/programar">Programar copia</a>
+                <a class="btn bg-blue" href="/eliminar">Eliminar copia</a>
+                <a class="btn bg-orange" href="/restaurar">Restaurar copia</a>
         </p>
 </div>
 </section>
