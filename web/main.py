@@ -49,6 +49,26 @@ def inicio():
 def inicio():
 	return template('static/pages/backups/backups.tpl', usuario=usuario)
 
+@route('/nuevo')
+def inicio():
+	return template("static/pages/backups/nuevo.tpl", usuario=usuario)
+
+@route('/nuevo2', method='post')
+def inicio():
+        label = request.forms.get('label')
+	tipo = request.forms.get('tipo')
+	comentario = request.forms.get('comentario')
+        return template('static/pages/backups/nuevo2.tpl', usuario=usuario, label=label, tipo=tipo, comentario=comentario)
+
+
+@route('/programar')
+def inicio():
+        return template('static/pages/backups/programar.tpl', usuario=usuario)
+
+@route('/eliminar')
+def inicio():
+        return template('static/pages/backups/eliminar.tpl', usuario=usuario)
+
 
 @route('/docs')
 def inicio():
@@ -58,5 +78,5 @@ def inicio():
 def server_static(filepath):
     return static_file(filepath, root='static')  
 
-run(host='0.0.0.0',port=8080)
+run(host='0.0.0.0',port=8081)
 
