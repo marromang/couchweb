@@ -3,10 +3,7 @@
 <section class="content">
  <div class="box-body">
 
-		{{ label }}
-		{{ tipo }}
-		{{ comentario }}
-
+		{{ cad }}
 
         </div>
         <!--/.col (right) -->

@@ -20,19 +20,11 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Tipo</label>
-              <select class="form-control" name="tipo">
-                <option>Completa</option>
-                <option>Incremental</option>
-                <option>Diferencial</option>
-              </select>
-            </div>
-            <div class="form-group">
               <label>Nodos</label>
               <select class="form-control" name="nodo">
                 <option>stark</option>
                 <option>pepper</option>
-                <option>Todos</option>
+                <option>todos</option>
               </select>
             </div>
             <div class="form-group">

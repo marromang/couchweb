@@ -7,9 +7,16 @@ import os
 import getpass
 import psutil
 
+#usuario activo en jarvis
 usuario = getpass.getuser()
 
-active = 0
+#conexion a couchbase
+from couchbase.cluster import Cluster
+from couchbase.cluster import PasswordAuthenticator
+cluster = Cluster('couchbase://localhost')
+authenticator = PasswordAuthenticator('username', 'password')
+cluster.authenticate(authenticator)
+bucket = cluster.open_bucket('bucket-name')
 
 def human(n):
     symbols = ('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y')
@@ -21,6 +28,7 @@ def human(n):
             value = float(n) / prefix[s]
             return '%.1f%s' % (value, s)
     return "%sB" % n
+
 @route('/')
 def inicio():
 	active = 2
@@ -55,10 +63,26 @@ def inicio():
 
 @route('/nuevo2', method='post')
 def inicio():
-        label = request.forms.get('label')
+	host = request.forms.get('host')
 	tipo = request.forms.get('tipo')
-	comentario = request.forms.get('comentario')
-        return template('static/pages/backups/nuevo2.tpl', usuario=usuario, label=label, tipo=tipo, comentario=comentario)
+	bucket = request.forms.get('bucket')
+	nodos = request.forms.get('nodo')
+
+	if host == 'stark':
+		ip = '172.22.200.101'
+	else:
+		ip = '172.22.200.103'
+
+	if nodos != 'todos':
+		if bucket:
+			cad="cbbackup http://"+ip+":8091 /backups -u Admin -p pass --single-node -b "+bucket
+		else: 
+			cad="cbbackup http://"+ip+":8091 /backups -u Admin -p pass --single-node"
+	elif bucket:
+		cad="cbbackup http://"+ip+":8091 /backups -u Admin -p pass -b "+bucket
+	else:
+		cad="cbbackup http://"+ip+":8091 /backups -u Admin -p pass"
+        return template('static/pages/backups/nuevo2.tpl', usuario=usuario, cad=cad)
 
 
 @route('/programar')
