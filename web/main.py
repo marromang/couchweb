@@ -35,6 +35,13 @@ def human(n):
             return '%.1f%s' % (value, s)
     return "%sB" % n
 
+def checkAlive (ip):
+	if os.system("fping " + ip) == ip:
+		res = True 
+	else:
+		res = False
+	return res
+
 @route('/')
 def inicio():
 	active = 2
@@ -56,7 +63,10 @@ def inicio():
 	
 @route('/metrica')
 def inicio():
-	return template('static/pages/monitorizacion.tpl', usuario=usuario)
+	stark = checkAlive('172.22.200.101')
+	pepper = checkAlive('172.22.200.103')
+	jarvis = checkAlive('172.22.200.105')
+	return template('static/pages/monitorizacion.tpl', usuario=usuario, stark=stark, pepper=pepper, jarvis=jarvis)
 
 
 @route('/backups')
