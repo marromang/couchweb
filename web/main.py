@@ -36,16 +36,28 @@ def human(n):
     return "%sB" % n
 
 def checkAlive (ip):
-	if os.system("fping " + ip) == ip:
-		res = True 
-	else:
-		res = False
+	res = True
+	if os.system("fping -a "+ ip) != 0:
+		res = False 
 	return res
+
+stark = checkAlive('172.22.200.101')
+pepper = checkAlive('172.22.200.103')
+jarvis = checkAlive('172.22.200.105')
 
 @route('/')
 def inicio():
-	active = 2
-	return template('index.tpl', usuario=usuario, active=active)
+	activos = 0
+	total = 3
+	if stark:
+		activos = activos + 1
+	if pepper:
+		activos = activos + 1
+	if jarvis: 	
+		activos = activos + 1
+	inactivos = total - activos
+	
+	return template('index.tpl', usuario=usuario, activos=activos, inactivos=inactivos, total=total)
 
 
 @route('/jarvis')
@@ -63,9 +75,6 @@ def inicio():
 	
 @route('/metrica')
 def inicio():
-	stark = checkAlive('172.22.200.101')
-	pepper = checkAlive('172.22.200.103')
-	jarvis = checkAlive('172.22.200.105')
 	return template('static/pages/monitorizacion.tpl', usuario=usuario, stark=stark, pepper=pepper, jarvis=jarvis)
 
 
@@ -151,6 +160,15 @@ def inicio():
                 if destino:
                 	cad = cad+" --bucket-destination="+destino
 	return template('static/pages/backups/restaurar2.tpl', usuario=usuario, cad=cad)
+
+@route('/stark')
+def inicio():
+	redirect('http://172.16.103.53/zabbix')
+
+@route('/pepper')
+def inicio():
+	redirect('http://172.16.103.53/zabbix')
+
 
 @route('/docs')
 def inicio():
