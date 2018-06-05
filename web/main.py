@@ -6,6 +6,8 @@ from sys import argv
 import os
 import getpass
 import psutil
+import mysql.connector
+
 
 #usuario activo en jarvis
 usuario = getpass.getuser()
@@ -17,6 +19,10 @@ usuario = getpass.getuser()
 #authenticator = PasswordAuthenticator('username', 'password')
 #cluster.authenticate(authenticator)
 #bucket = cluster.open_bucket('bucket-name')
+
+#cnx = connection.MySQLConnection(user='root', password='root',host='localhost',database='backups')
+cnx = mysql.connector.connect(user='root',password='root', database='backups')
+cursor = cnx.cursor()
 
 def human(n):
     symbols = ('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y')
@@ -55,7 +61,14 @@ def inicio():
 
 @route('/backups')
 def inicio():
-	return template('static/pages/backups/backups.tpl', usuario=usuario)
+	query = ("SELECT * FROM backups limit 10")
+	cursor.execute(query)
+	lista = []
+
+	for c in cursor:
+		lista.append(c)
+	print lista
+	return template('static/pages/backups/backups.tpl', usuario=usuario, lista=lista)
 
 @route('/nuevo')
 def inicio():
@@ -63,11 +76,22 @@ def inicio():
 
 @route('/nuevo2', method='post')
 def inicio():
+	label = request.forms.get('label')
 	host = request.forms.get('host')
-	tipo = request.forms.get('tipo')
 	bucket = request.forms.get('bucket')
 	nodos = request.forms.get('nodo')
+	comentario = request.forms.get('comentario')
 
+	add_backup = ("INSERT INTO backups VALUES (%s, %s, %s, %s, %s)")
+
+	data_backup = (label, host, nodos, bucket, comentario)
+	cursor.execute(add_backup, data_backup)
+	back_no = cursor.lastrowid
+
+	cnx.commit()
+
+#	cursor.close()
+#	cnx.close()
 	if host == 'stark':
 		ip = '172.22.200.101'
 	else:

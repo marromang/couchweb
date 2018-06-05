@@ -21,13 +21,20 @@
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
               <table class="table table-hover">
-                <tr>
+<tr>
+                  <th>Label</th>
                   <th>Host</th>
-                  <th>Fecha</th>
-                  <th>Estado</th>
-                  <th>Tamaño</th>
+					<th>Comentarios</th>
                 </tr>
-               
+
+% for i in xrange(len(lista)):
+  <tr>
+	<td>{{  lista[i][0] }}</td>
+        <td>{{  lista[i][1] }}</td>
+        <td>{{  lista[i][4] }}</td>
+
+  </tr>
+% end		               
               </table>
             </div>
             <!-- /.box-body -->

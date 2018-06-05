@@ -112,9 +112,7 @@
 
  <section class="content">
                 <p>
-                        <a class="btn bg-maroon" href=" ">Icinga</a>
-                        <a class="btn bg-purple" href=" ">Grafana</a>
-                        <a class="btn bg-blue" href="stark">Resumen</a>
+                        <a class="btn bg-purple" href="http://172.16.103.53/zabbix">Zabbix</a>
                 </p>
 </div>
 </section>

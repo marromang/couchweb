@@ -36,3 +36,14 @@ apt install zabbix-agent
 
 172.22.200.105/zabbix
 Admin/zabbix
+
+
+
+create table bakcups
+(
+	label varchar(15),
+	host varchar(7),
+	nodos varchar(10),
+	bucket varchar(25),
+	comentarios varchar(100)
+);
