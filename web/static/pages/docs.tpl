@@ -19,21 +19,21 @@
                 <tr>
                   <td>Grafana</td>
                   <td><a href="http://docs.grafana.org/">https://docs.grafana.org/</a></td>
-		</tr>
-		<tr>
+                </tr>
+                <tr>
                   <td>GitHub</td>
                   <td><a href="https://github.com/marromang/couchweb">https://github.com/marromang/couchweb</a></td>
                 </tr>
-		<tr>
+                <tr>
                   <td>Pdf</td>
                   <td><a href="#"></a></td>
                 </tr>
-	      	</tbody<
-	      </table>
-	    </div>
-	</div>
+                </tbody>
+              </table>
+            </div>
+        </div>
        </div>
       </div>
     </section>
 </div>
-%include('footer.tpl')
+%include('footer.tpl')    

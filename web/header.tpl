@@ -77,7 +77,7 @@
 	<li><a href="/"><i class="fa fa-home"></i><span>Inicio</span></a></li>
 	<li><a href="/backups"><i class="fa fa-file"></i><span>Copias de seguridad</span></a>
 	<li><a href="/metrica"><i class="fa fa-book"></i> <span>Metrica</span></a></li>
-	<li><a href="/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
+	<li><a href="/docs"><i class="fa fa-book"></i> <span>Documentacion</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
