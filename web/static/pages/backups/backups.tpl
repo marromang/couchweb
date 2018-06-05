@@ -24,13 +24,15 @@
 <tr>
                   <th>Label</th>
                   <th>Host</th>
-					<th>Comentarios</th>
+		  <th>Fecha</th>
+		  <th>Comentarios</th>
                 </tr>
 
 % for i in xrange(len(lista)):
   <tr>
 	<td>{{  lista[i][0] }}</td>
         <td>{{  lista[i][1] }}</td>
+        <td>{{  lista[i][5] }}</td>
         <td>{{  lista[i][4] }}</td>
 
   </tr>
@@ -44,8 +46,6 @@
 </div>
         <p>
                 <a class="btn bg-maroon" href="/nuevo">Nueva copia</a>
-                <a class="btn bg-purple" href="/programar">Programar copia</a>
-                <a class="btn bg-blue" href="/eliminar">Eliminar copia</a>
                 <a class="btn bg-orange" href="/restaurar">Restaurar copia</a>
         </p>
 </div>

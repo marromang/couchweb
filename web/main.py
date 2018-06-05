@@ -7,7 +7,7 @@ import os
 import getpass
 import psutil
 import mysql.connector
-
+import time
 
 #usuario activo en jarvis
 usuario = getpass.getuser()
@@ -61,13 +61,12 @@ def inicio():
 
 @route('/backups')
 def inicio():
-	query = ("SELECT * FROM backups limit 10")
+	query = ("SELECT * FROM backups order by fecha desc limit 10")
 	cursor.execute(query)
 	lista = []
 
 	for c in cursor:
 		lista.append(c)
-	print lista
 	return template('static/pages/backups/backups.tpl', usuario=usuario, lista=lista)
 
 @route('/nuevo')
@@ -82,9 +81,9 @@ def inicio():
 	nodos = request.forms.get('nodo')
 	comentario = request.forms.get('comentario')
 
-	add_backup = ("INSERT INTO backups VALUES (%s, %s, %s, %s, %s)")
+	add_backup = ("INSERT INTO backups VALUES (%s, %s, %s, %s, %s, %s)")
 
-	data_backup = (label, host, nodos, bucket, comentario)
+	data_backup = (label, host, nodos, bucket, comentario,time.strftime("%d/%m/%Y %H:%M:%S") )
 	cursor.execute(add_backup, data_backup)
 	back_no = cursor.lastrowid
 
@@ -116,12 +115,20 @@ def inicio():
 
 @route('/restaurar2', method='post')
 def inicio():
-        
+	label = request.forms.get('label')        
    	host = request.forms.get('host')
        	directorio = request.forms.get('dir')
         origen = request.forms.get('origen')
         destino = request.forms.get('destino')
+	comentario = request.forms.get('comentario')
 
+	add_restore = ("INSERT INTO restore VALUES (%s, %s, %s, %s, %s, %s)")
+
+        data_restore = (label, host, directorio, origen, destino, comentario)
+        cursor.execute(add_restore, data_restore)
+        back_no = cursor.lastrowid
+
+        cnx.commit()
         if host == 'stark':
                 ip = '172.22.200.101'
         else:
@@ -134,11 +141,6 @@ def inicio():
                 if destino:
                 	cad = cad+" --bucket-destination="+destino
 	return template('static/pages/backups/restaurar2.tpl', usuario=usuario, cad=cad)
-
-@route('/eliminar')
-def inicio():
-        return template('static/pages/backups/eliminar.tpl', usuario=usuario)
-
 
 @route('/docs')
 def inicio():
