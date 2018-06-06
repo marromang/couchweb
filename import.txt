@@ -52,35 +52,17 @@ Exportar con formato de linea con 4 threads
 Exportar con formato de lista
   $ cbexport json -c couchbase://127.0.0.1 -u Administrator -p password -b default -o /data/list.json -f list 
 
+
 ### cbimport ###
 cbimport [--version] [--help] <command> [<args>]
 
-Description
+Commandos
 
-cbimport is used to import data from various sources into Couchbase. For more information on how specific commands work, run cbimport <command> --help.
+cbimport csv: importa desde ficheros csv
 
-Options
-Table 1. cbimport options Option  Description
+cbimport json: importa desde ficheros JSON
 
---version
-  Prints the cbimport suite version that the cbimport program came from.
---help  Prints the synopsis and a list of commands. If a cbimport command is named, this option will bring up the manual page for that command.
-
-Commands
-
-cbimport csv: Imports data into Couchbase from a CSV file.
-
-cbimport json: Imports data into Couchbase from a JSON file.
-
-Discussion
-
-The cbimport command is used to import data from various sources into a Couchbase cluster. Each supported format is a sub-command of the cbimport utility.
-cbimport csv
-cbimport csv
-
-cbimport csv imports CSV data into a Couchbase cluster.
-
-Synopsis
+### cbimport csv ###
 
 cbimport csv [--cluster <url>] [--bucket <bucket_name>] [--dataset <path>]
           [--username <username>] [--password <password>][--generate-key <key_expr>]
@@ -89,85 +71,59 @@ cbimport csv [--cluster <url>] [--bucket <bucket_name>] [--dataset <path>]
           [--error-log <path>][--log-file <path>]
 
 Description
-
-Imports CSV and other forms of separated value type data into Couchbase. By default, data files should start with a line containing comma-separated column names, followed by one or more lines of comma-separated values. However, if you are importing data that using a different field separator, for example tabs, you can use the --field-separator flag to specify that tabs are used instead of commas.
-
-The cbimport command also supports custom key-generation for each document in the imported file. Key generation is done with a combination of pre-existing fields in a document and custom generator functions supplied by cbimport. For details about key generators, see Key Generators.
+Importa csv y otros formatos en los que los datos estén separados por comas. Por defecto, en la primera linea del fichero aparcen los nombres de las columnas separados por comas. Para especificar un separador específico se us --field-separator
 
 Options
-Required options for cbimport csv Option   Description
--c,--cluster <url>  The host name of a node in the cluster to import data into. See Host Formats for details about host name specification formats.
--u,--username <username>  The user name for cluster authentication. The user must have the appropriate privileges to write to the bucket in which data will be loaded to.
--p,--password <password>  The password for cluster authentication. The user must have the appropriate privileges to write to the bucket in which data will be loaded to. Specifying this option without a value will allow the user to type a non-echoed password to stdin.
--b,--bucket <bucket_name>   The name of the bucket to import data into.
--d,--dataset <uri>  The URI of the dataset to be loaded. cbimport supports loading data from a local file or from a URL. When importing data from a local file the path must be prefixed with file://. If a URL is used then the file should be prefixed with either http:// or https://.
+Opciones obligatorias:
+-c,--cluster <url>  host del nodo del cluster del que se van a exportar los datos.
+-u,--username <username>  usuario del cluster. Necesita tener los permisos adecuados.
+-p,--password <password>  contraseña del usuario anterior.
+-b,--bucket <bucket_name>   nombre del bucket.
+-d,--dataset <uri>  URI de los datos que van a ser importados (local o URL) Si el un fichero local, tiene que comenzar con file://. Si es una URL, empezará por http:// o https://.
 
-Optional options for cbimport csv Option   Description
--g,--generate-key <key_expr>  Specifies a key expression used for generating a key for each document imported. See Key Generators for more information on specifying key generators.
---field-separator <num>   Specifies the field separator to use when reading the dataset. By default the separator is a comma. To read tab separated files you can specify a tab in this field. Note that in bash shell a tab is specified as $'\t'.
---limit-rows <num>  Specifies that the utility should stop loading data after reading a certain amount of rows from the dataset. This option is useful when you have a large dataset and only want to partially load it.
---skip-rows <num>   Specifies that the utility should skip some rows before starting to import data. If this flag is used together with the --limit-rows flag then cbimport imports the number of rows specified by --limit-rows after skipping the rows specified by --skip-rows.
---no-ssl-verify   Skips the SSL verification phase. Specifying this flag will allow a connection using SSL encryption, but will not verify the identity of the server you connect to. You are vulnerable to a man-in-the-middle attack if you use this flag. Either this flag or the --cacert flag must be specified when using an SSL encrypted connection.
---infer-types   By default all values in a CSV files are interpreted as strings. If infer types is set then cbimport will look at each value and decide whether it is a string, integer, or boolean value and put the inferred type into the document.
---omit-empty  Some values in a CSV row will not contain any data. By default these values are put into the generated JSON document as an empty string. Use this flag to omit fields that contain empty values.
---cacert  Specifies a CA certificate that will be used to verify the identity of the server being connecting to. Either this flag or the --no- ssl-verify flag must be specified when using an SSL encrypted connection.
--t,--threads <num>  Specifies the number of concurrent clients to use when importing data. Fewer clients means imports will take longer, but there will be less cluster resources used to complete the import. More clients means faster imports, but at the cost of more cluster resource usage. This parameter defaults to 1 if it is not specified and it is recommended that this parameter is not set to be higher than the number of CPUs on the machine where the import is taking place.
--e,--errors-log <path>  Specifies a log file where JSON documents that could not be loaded are written to. A document might not be loaded if a key could not be generated for the document or if the document is not valid JSON. The errors file is written in the "json lines" format (one document per line).
--l,--log-file   Specifies a log file for writing debugging information about cbimport execution.
-
-Host Formats
-When specifying a host for the cbimport command the following formats are expected:
-
-    couchbase://<addr>
+Formato de host
+Al especificar un host al comando cbexport, podemos ponerlo de 3 formas:
+    couchbase://<addr> (la mas recomendada si se comunica por el puerto por defecto)
     <addr>:<port>
     http://<addr>:<port>
 
-We recommend using the couchbase://<addr> format for standard installations. The other two formats allow an option to take a port number which is needed for non-default installations where the admin port has been set up on a port other that 8091.
+Generación de keys
+Se utilizan para asignar una jey unica para cada documento. Se suelen generar combinando columnas, valores arbitrarios o generadores personalizados.
+Ejemplo
+  Dataset (csv)
+    fname,age 
+    alice,40 
+    barry,36
+  Expresión del generador de key
+     --generate-key key::%fname%::#MONO_INCR#
+  Claves generadas
+    key::alice::1 
+    key::barry::2
+Se usa el valor de la columan "fname" y un generador personalizado. Para especificar que se va a sustituir "fname", se pone entre %
+También contiene la función MONO_INCR, que hace que se incremente en 1 cada vez que se genera una clave
+Cualquier texto que esté entre % o # es un texto estático en el resultado. Si una clave requiere tener uno de esos símbolos, hay que ponerlos doblres (%% o ##)
+Si una clave no se puede generar porque la columna no exista, se omite esa linea.
 
-Key Generators
-Key generators are used in order to generate a unique key for each document loaded. Keys can be generated by using a combination of column values (indicated by wrapping the column name with "%"), custom generators (currently #MONO_INCR# which returns a monotonically increasing integer, and #UUID# which returns a UUID), and arbitrary characters for formatting.
-Here is an example of a key generation expression. Given the CSV dataset:
-fname,age 
-alice,40 
-barry,36
+Ejemplos
+  Usando los siguientes ficheros
+    /data/people.csv
+      fname,age
+      alice,40
+      barry,36
+    /data/people.tsv
+      fname  age
+      alice  40
+      barry  36
 
-And the key generator expression:
---generate-key key::%fname%::#MONO_INCR#
+Para importar desde people.csv usando la clave con "fname" y con 4 threads:
+$ cbimport csv -c couchbase://127.0.0.1 -u Administrator -p password  -b default -d file:///data/people.csv -g key::%fname% -t 4
 
-The following keys are generated:
-key::alice::1 
-key::barry::2
+Para importar desde people.tsv usando la clave con "fname" y el generadir de UUID:
+$ cbimport csv -c couchbase://127.0.0.1 -u Administrator -p password -b default -d file:///data/people.tsv --field-separator $'\t' -g key::%fname%::#UUID# -t 4
 
-In the example above we generate a key using the value in each row of the "fname" field and a custom generator. To specify that we want to substitute the value in the "fname" field we put the name of the field "fname" between two percent signs. This is an example of field substitution and it allows the ability to build keys out of data that is already in the dataset.
-This example also contains a generator function MONO_INCR which will increment by 1 each time the key generator is called. Since this is the first time this key generator was executed it returns 1. If we executed the key generator again it would return 2 and so on.
-Any text that isnt wrapped in "%" or "#" is static text and will be in the result of all generated keys. If a key needs to contain a "%" or "#" in static text then they need to be escaped by providing a double "%" or "#" (ex. "%%" or "##").
-If a key cannot be generated because the column specified in the key generator is not present in the row then that row will be skipped. To see a list of rows that were not imported due to failed key generation, users can specify the --errors-log <path> parameter to dump a list of all rows that could not be imported.
+Si los datos no están en local, pero si via http (http://data.org/people.csv)
+$ cbimport csv -c couchbase://127.0.0.1 -u Administrator -p password -b default -d http://data.org/people.csv -g key::%fname%::#UUID# -t 4
 
-Examples
-The examples in this section illustrate importing data from the following files:
-
-/data/people.csv
-fname,age
-alice,40
-barry,36
-
-/data/people.tsv
-fname  age
-alice  40
-barry  36
-
-To import data from /data/people.csv using a key containing the "fname" column and utilizing 4 threads the following command can be run.
-$ cbimport csv -c couchbase://127.0.0.1 -u Administrator -p password \
-            -b default -d file:///data/people.csv -g key::%fname% -t 4
-
-To import data from /data/people.tsv using a key containing the "fname" column and the UUID generator the following command would be run.
-$ cbimport csv -c couchbase://127.0.0.1 -u Administrator -p password \
-            -b default -d file:///data/people.tsv --field-separator $'\t' \
-            -g key::%fname%::#UUID# -t 4
-
-If the dataset in not available on the local machine where the command is run, but is available via an HTTP URL we can still import the data using cbimport. If we assume that the data is located at http://data.org/people.csv then we can import the data with the following command.
-$ cbimport csv -c couchbase://127.0.0.1 -u Administrator -p password \
-            -b default -d http://data.org/people.csv -g key::%fname%::#UUID# -t 4
 
 Discussion
 The cbimport csv command is used to quickly import data from various files containing CSV, TSV, or other separated format data. While importing CSV the cbimport command only utilizes a single reader. As a result importing large dataset may benefit from being partitioned into multiple files and running a separate cbimport process on each file.
