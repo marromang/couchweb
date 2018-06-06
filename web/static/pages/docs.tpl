@@ -26,7 +26,7 @@
                 </tr>
                 <tr>
                   <td>Pdf</td>
-                  <td><a href="#"></a></td>
+                  <td><a href="http://informatica.gonzalonazareno.org/proyectos/">http://informatica.gonzalonazareno.org/proyectos/</a></td>
                 </tr>
                 </tbody>
               </table>
