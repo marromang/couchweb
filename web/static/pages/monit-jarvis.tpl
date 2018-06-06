@@ -27,7 +27,7 @@
           <div class="small-box bg-maroon disabled">
             <div class="inner">
               <h3>{{ ramPerc }}</h3>
-                <p>Porcentaje</p>
+                <p>Porcentaje usado</p>
             </div>
           </div>
         </div>
@@ -47,6 +47,14 @@
             <div class="inner">
               <h3>{{ diskTotal }}</h3>
               <p>Memoria total</p>
+            </div>
+          </div>
+        </div>
+	<div class="col-lg-3 col-xs-6">
+          <div class="small-box bg-maroon disabled">
+            <div class="inner">
+              <h3>{{ diskPerc }}</h3>
+                <p>Porcentaje libre</p>
             </div>
           </div>
         </div>
