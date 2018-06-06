@@ -14,12 +14,12 @@ import time
 usuario = getpass.getuser()
 
 #conexion a couchbase
-#from couchbase.cluster import Cluster
-#from couchbase.cluster import PasswordAuthenticator
-#cluster = Cluster('couchbase://localhost')
-#authenticator = PasswordAuthenticator('username', 'password')
-#cluster.authenticate(authenticator)
-#bucket = cluster.open_bucket('bucket-name')
+from couchbase.cluster import Cluster
+from couchbase.cluster import PasswordAuthenticator
+cluster = Cluster('couchbase://172.22.200.101')
+authenticator = PasswordAuthenticator('Administrator', 'marromang')
+cluster.authenticate(authenticator)
+bucket = cluster.open_bucket('beer-sample')
 
 #cnx = connection.MySQLConnection(user='root', password='root',host='localhost',database='backups')
 cnx = mysql.connector.connect(user='root',password='root', database='backups')
@@ -123,15 +123,16 @@ def inicio():
 
 	if nodos != 'todos':
 		if bucket:
-			cad="cbbackup http://"+ip+":8091 /backups -u Admin -p pass --single-node -b "+bucket
+			cad="sh /opt/couchbase/bin/cbbackup http://"+ip+":8091 /home/ubuntu/backups -u Administrator -p marromang --single-node -b "+bucket
 		else: 
-			cad="cbbackup http://"+ip+":8091 /backups -u Admin -p pass --single-node"
+			cad="sh /opt/couchbase/bin/cbbackup http://"+ip+":8091 /home/ubuntu/backups -u Administrator -p marromang --single-node"
 	elif bucket:
-		cad="cbbackup http://"+ip+":8091 /backups -u Admin -p pass -b "+bucket
+		cad="sh /opt/couchbase/bin/cbbackup http://"+ip+":8091 /home/ubunut/backups -u Administrator -p marromang -b "+bucket
 	else:
-		cad="cbbackup http://"+ip+":8091 /backups -u Admin -p pass"
-	 
-	print cad
+		cad="sh /opt/couchbase/bin/cbbackup http://"+ip+":8091 /home/ubuntu/backups -u Administrator -p marromang"
+	
+	os.system("ssh ubuntu@172.22.200.101 "+cad)
+	print lista
 	redirect("/backups")
       	#return template('static/pages/backups/nuevo2.tpl', usuario=usuario, cad=cad)
 
@@ -149,7 +150,7 @@ def inicio():
 		#lista = commands.getstatusoutput("ssh -q ubuntu@172.22.200.101 'ls /home/backups'")
 	#else: 
 		#lista = commands.getstatusoutput("ssh -q ubuntu@172.22.200.103 'ls /home/backups'")
-	lista = commands.getstatusoutput("ssh -q ubuntu@172.16.101.170 'ls /home/ubuntu'")
+	lista = commands.getstatusoutput("ssh -q ubuntu@172.22.200.101 'ls /home/ubuntu/descargas'")
 	lista2= []
 	for i in xrange(len(lista)):
 		if i > 0:
