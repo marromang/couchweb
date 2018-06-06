@@ -4,6 +4,7 @@ from bottle import *
 import requests
 from sys import argv
 import os
+import commands
 import getpass
 import psutil
 import mysql.connector
@@ -130,14 +131,34 @@ def inicio():
 	else:
 		cad="cbbackup http://"+ip+":8091 /backups -u Admin -p pass"
 	 
-      	return template('static/pages/backups/nuevo2.tpl', usuario=usuario, cad=cad)
-
+	print cad
+	redirect("/backups")
+      	#return template('static/pages/backups/nuevo2.tpl', usuario=usuario, cad=cad)
 
 @route('/restaurar')
 def inicio():
-        return template("static/pages/backups/restaurar.tpl", usuario=usuario)
+	host = request.forms.get('host')
+	
+	return template("static/pages/backups/restaurar.tpl", usuario=usuario, host=host)
 
 @route('/restaurar2', method='post')
+def inicio():
+	host = request.forms.get('host')
+	print host
+	#if host = stark:
+		#lista = commands.getstatusoutput("ssh -q ubuntu@172.22.200.101 'ls /home/backups'")
+	#else: 
+		#lista = commands.getstatusoutput("ssh -q ubuntu@172.22.200.103 'ls /home/backups'")
+	lista = commands.getstatusoutput("ssh -q ubuntu@172.16.101.170 'ls /home/ubuntu'")
+	lista2= []
+	for i in xrange(len(lista)):
+		if i > 0:
+			lista2.append(lista[i].splitlines())
+	for x in lista2:
+		lis = x
+        return template("static/pages/backups/restaurar2.tpl", usuario=usuario, dirs=lis, host=host)
+
+@route('/restaurar3', method='post')
 def inicio():
 	label = request.forms.get('label')        
    	host = request.forms.get('host')
@@ -164,7 +185,8 @@ def inicio():
                 cad="cbrestore /backup/"+directorio+" http://Admin:pass@"+ip+":8091 --bucket-source="+origen
                 if destino:
                 	cad = cad+" --bucket-destination="+destino
-	return template('static/pages/backups/restaurar2.tpl', usuario=usuario, cad=cad)
+	print cad
+	redirect('/backups')
 
 @route('/stark')
 def inicio():
