@@ -41,12 +41,13 @@ def checkAlive (ip):
 		res = False 
 	return res
 
-stark = checkAlive('172.22.200.101')
-pepper = checkAlive('172.22.200.103')
-jarvis = checkAlive('172.22.200.105')
 
 @route('/')
 def inicio():
+	stark = checkAlive('172.22.200.101')
+	pepper = checkAlive('172.22.200.103')
+	jarvis = checkAlive('172.22.200.105')
+
 	activos = 0
 	total = 3
 	if stark:
@@ -75,6 +76,10 @@ def inicio():
 	
 @route('/metrica')
 def inicio():
+	stark = checkAlive('172.22.200.101')
+	pepper = checkAlive('172.22.200.103')
+	jarvis = checkAlive('172.22.200.105')
+
 	return template('static/pages/monitorizacion.tpl', usuario=usuario, stark=stark, pepper=pepper, jarvis=jarvis)
 
 
