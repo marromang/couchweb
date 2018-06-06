@@ -1,58 +1,40 @@
 ### cbexport ###
 cbexport [--version] [--help] <command> [<args>]
 
-ssh -i /home/ubuntu/.ssh/id_rsa cbexport [--version] [--help] <command> [<args>]  
-
-Description
-
-cbexport is used to export data from Couchbase in various formats. For more information on how specific commands work, run cbexport <command> --help.
-
+Con cbexport se pueden exportar los datos en diversos formatos. El más utlizado es json.
 ### cbexport json ###
 cbexport json [--cluster <url>] [--bucket <bucket_name>][--format <data_format>]
               [--username <username>][--password <password>]
               [--include-key <key>][--cacert <path>][--no-ssl-verify]
               [--threads <num>][--log-file <path>]
 
-Exports JSON data from Couchbase. The cbexport json command supports exporting JSON documents to a file with a document on each line or a file that contains a JSON list where each element is a document. The file format to export to can be specified with the --format flag. See Dataset Formats for more details on the supported file formats.
+El comando copia documentos JSON ya existentes a un fichero con un documento por línea o un fichero que tiene una lista en JSON en la que cada elemento es un documento. 
 
-Required options for cbexport json
--c,--cluster <url>  The host name of a node in the cluster to export data from. See Host Formats for details about host name specification formats.
--u,--username <username>  The user name for cluster authentication. The user must have the appropriate privileges to read the bucket from which data will be exported.
--p,--password <password>  The password for cluster authentication. The user must have the appropriate privileges to read from the bucket from which data will be exported. Specifying this option without a value will allow the user to type a non-echoed password to stdin.
--b,--bucket <bucket_name>   The name of the bucket to export data from.
--f,--format <format>  The format of the dataset specified (lines or list). See Dataset Formats for more details on the formats supported by cbexport.
--o,--output <path>  The path to the location of the file that JSON documents from Couchbase should be exported to. This may be an absolute or relative path, but must point to a file. The file does not have to exist when the command is invoked.
+Opciones obligatorias
+-c,--cluster <url>  host del nodo del cluster del que se van a exportar los datos.
+-u,--username <username>  usuario del cluster. Necesita tener los permisos adecuados.
+-p,--password <password>  contraseña del usuario anterior.
+-b,--bucket <bucket_name>   nombre del bucket.
+-f,--format <format>  formato de los datos (lineas o lista)
+-o,--output <path>  fichero en el que se guardarán los datos exportados
 
-Optional options for cbexport json
---include-key <key>   Couchbase stores data as key value pairs where the value is a JSON document and the key is an identifier for retrieving that document. By default cbexport will only export the value portion of the document. If you wish to include the key in the exported document, then this option should be specified. The value passed to this option should be the field name that the key is stored under.
---no-ssl-verify   Skips the SSL verification phase. Specifying this flag will allow a connection using SSL encryption, but will not verify the identity of the server you connect to. You are vulnerable to a man-in-the-middle attack if you use this flag. Either this flag or the --cacert flag must be specified when using an SSL encrypted connection.
---cacert  Specifies a CA certificate that will be used to verify the identity of the server being connecting to. Either this flag or the --no- ssl-verify flag must be specified when using an SSL encrypted connection.
--t,--threads <num>  Specifies the number of concurrent clients to use when exporting data. Fewer clients means exports will take longer, but there will be less cluster resources used to complete the export. More clients means faster exports, but at the cost of more cluster resource usage. This parameter defaults to 1 if it is not specified and it is recommended that this parameter is not set to be higher than the number of CPUs on the machine where the export is taking place.
--l,--log-file   Specifies a log file for writing debugging information about cbexport execution.
 
-Host Formats
-When specifying a host for the cbexport command the following formats are expected:
-
-    couchbase://<addr>
+Formato de host
+Al especificar un host al comando cbexport, podemos ponerlo de 3 formas:
+    couchbase://<addr> (la mas recomendada si se comunica por el puerto por defecto)
     <addr>:<port>
     http://<addr>:<port>
 
-We recommend using the couchbase://<addr> format for standard installations. The other two formats allow an option to take a port number which is needed for non-default installations where the admin port has been set up on a port other that 8091.
+Formato de datos
+  Lines
+    Contiene un documento JSON por línea en el fichero.
+      {"key": "mykey1", "value": "myvalue1"}
+      {"key": "mykey2", "value": "myvalue2"}
+      {"key": "mykey3", "value": "myvalue3"}
+      {"key": "mykey4", "value": "myvalue4"}
 
-Dataset Formats
-The cbexport command supports the following formats:
-
-    Lines
-    The lines format specifies a file that contains one JSON document on every line in the file. This format is specified by setting the --format option to "lines". Here's an example of a file in lines format:
-
-    {"key": "mykey1", "value": "myvalue1"}
-    {"key": "mykey2", "value": "myvalue2"}
-    {"key": "mykey3", "value": "myvalue3"}
-    {"key": "mykey4", "value": "myvalue4"}
-
-    List
-    The list format specifies a file which contains a JSON list where each element in the list is a JSON document. The file may only contain a single list, but the list may be specified over multiple lines. This format is specified by setting the --format option to "list". Here's an example of a file in list format:
-
+  Lista
+    Contiene una lista donde cada elemento es un documento JSON,
     [
       {
         "key": "mykey1",
@@ -63,18 +45,12 @@ The cbexport command supports the following formats:
       {"key": "mykey4", "value": "myvalue4"}
     ]
 
-Examples
-To export data to /data/lines.json using the lines format and running with 4 threads the following command can be run.
+Ejemplos
+Exportar con formato de linea con 4 threads
+  $ cbexport json -c couchbase://127.0.0.1 -u Administrator -p password -b default -o /data/lines.json -f lines -t 4
 
-$ cbexport json -c couchbase://127.0.0.1 -u Administrator -p password \
-          -b default -o /data/lines.json -f lines -t 4
-
-To export data from /data/list.json using the list format the following command can be run.
-
-$ cbexport json -c couchbase://127.0.0.1 -u Administrator -p password \
-           -b default -o /data/list.json -f list 
-
-
+Exportar con formato de lista
+  $ cbexport json -c couchbase://127.0.0.1 -u Administrator -p password -b default -o /data/list.json -f list 
 
 ### cbimport ###
 cbimport [--version] [--help] <command> [<args>]

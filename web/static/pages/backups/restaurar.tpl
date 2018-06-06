@@ -13,7 +13,6 @@
               <select class="form-control" name="host">
 	      	<option>stark</option>
 		<option>pepper</option>
-		<option>todos</option>
               </select>
             </div>
             <div class="form-group">
