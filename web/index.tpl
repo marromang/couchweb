@@ -13,7 +13,7 @@
             <p>Servidores totales</p>
         </div>
         <div class="icon">
-          <i class="ion ion-stats-bars"></i>
+          <i class="ion ion-filing"></i>
         </div>
       </div>
     </div>
@@ -24,7 +24,7 @@
             <p>Servidores activos</p>
         </div>
         <div class="icon">
-          <i class="ion ion-stats-bars"></i>
+          <i class="ion ion-battery-full"></i>
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@
             <p>Servidores inactivos</p>
         </div>
         <div class="icon">
-          <i class="ion ion-stats-bars"></i>
+          <i class="ion ion-battery-charging"></i>
         </div>
       </div>
     </div>

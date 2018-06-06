@@ -34,7 +34,7 @@
               <textarea class="form-control" rows="3" placeholder="Enter ..." name="comentario"></textarea>
             </div>
             <div class="form-group">
-              <button class="btn btn-success">Add Backup</button>
+              <button class="btn btn-success">Restaurar</button>
             </div>
           </form>
         </div>

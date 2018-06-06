@@ -17,7 +17,7 @@
               </select>
             </div>
             <div class="form-group">
-              <button class="btn btn-success">Set host</button>
+              <button class="btn btn-success">Siguiente</button>
             </div>
           </form>
         </div>
