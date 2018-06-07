@@ -3,7 +3,7 @@
   <section class="content-header">
     <h1>
       Inicio
-      <small>Version 0.1</small>
+      <small>Version 0.3</small>
     </h1>
     </br>
     <div class="col-lg-3 col-xs-6">

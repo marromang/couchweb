@@ -173,7 +173,7 @@ def restaurar3():
     	origen = request.forms.get('origen')
     	destino = request.forms.get('destino')
 	comentario = request.forms.get('comentario')
-
+	
 	# comprobacion de que la etiqueta no existe
 	query = ("SELECT label FROM restore")
 	lista = []
@@ -181,9 +181,11 @@ def restaurar3():
 		if c == label:
 			redirect('/error')
 
+	
 	# insercion de los datos de la nueva restauracion
+	hora = time.strftime("%d/%m/%Y %H:%M:%S")
 	add_restore = ("INSERT INTO restore VALUES (%s, %s, %s, %s, %s, %s)")
-    	data_restore = (label, host, directorio, origen, destino, comentario)
+    	data_restore = (label+"-"+hora, host, directorio, origen, destino, comentario)
     	cursor.execute(add_restore, data_restore)
     	back_no = cursor.lastrowid
 	cnx.commit()
@@ -248,7 +250,7 @@ def jarvis():
 	diskPerc = disk.percent
 
 	# template
-	return template('static/pages/monitorizacion/monit-jarvis.tpl', usuario=usuario, diskPerc = diskPerc, ramPerc = ramPerc, diskTotal=diskTotal, diskAvail=diskAvail, ramAvail=ramAvail, ramTotal=ramTotal)	
+	return template('static/pages/monitorizacion/jarvis.tpl', usuario=usuario, diskPerc = diskPerc, ramPerc = ramPerc, diskTotal=diskTotal, diskAvail=diskAvail, ramAvail=ramAvail, ramTotal=ramTotal)	
 	
 @route('/docs')
 def docs():
@@ -271,5 +273,6 @@ def error():
 def server_static(filepath):
     return static_file(filepath, root='static')  
 
-run(host='0.0.0.0',port=8081)
+
+run(host='0.0.0.0',port=8081, reloader=True)
 
