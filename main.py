@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 from bottle import *
 import requests
 from sys import argv
@@ -19,12 +16,12 @@ passwd = "marromang"
 port = "8091"
 
 # conexion a couchbase
-#from couchbase.cluster import Cluster
-#from couchbase.cluster import PasswordAuthenticator
-#cluster = Cluster('couchbase://172.22.200.101')
-#authenticator = PasswordAuthenticator('Administrator', 'marromang')
-#cluster.authenticate(authenticator)
-#bucket = cluster.open_bucket('beer-sample')
+from couchbase.cluster import Cluster
+from couchbase.cluster import PasswordAuthenticator
+cluster = Cluster('couchbase://172.22.200.101')
+authenticator = PasswordAuthenticator('Administrator', 'marromang')
+cluster.authenticate(authenticator)
+bucket = cluster.open_bucket('beer-sample')
 
 # cnx = connection.MySQLConnection(user='root', password='root',host='localhost',database='backups')
 cnx = mysql.connector.connect(user='root',password='root', database='backups')
@@ -51,7 +48,7 @@ def checkAlive (ip):
 
 @route('/')
 def inicio():
-	# se comprueba si los hosts estan activos
+	# se comprueba si los hosts están activos
 	stark = checkAlive('172.22.200.101')
 	pepper = checkAlive('172.22.200.103')
 	jarvis = checkAlive('172.22.200.105')
@@ -69,6 +66,35 @@ def inicio():
 	
 	# template
 	return template('index.tpl', usuario=usuario, activos=activos, inactivos=inactivos, total=total)
+
+
+@route('/jarvis')
+def jarvis():
+	# ram total, libre y porcentaje
+	ram = psutil.virtual_memory()
+	ramTotal = human(ram.total)
+	ramAvail = human(ram.available)
+	ramPerc = ram.percent
+
+	# disco total, libre y porcentaje
+	disk = psutil.disk_usage('/')
+	diskTotal = human(disk.total)
+	diskAvail = human(disk.used)
+	diskPerc = disk.percent
+
+	# template
+	return template('static/pages/monit-jarvis.tpl', usuario=usuario, diskPerc = diskPerc, ramPerc = ramPerc, diskTotal=diskTotal, diskAvail=diskAvail, ramAvail=ramAvail, ramTotal=ramTotal)	
+	
+@route('/metrica')
+def metrica():
+	# se comprueba si los hosts están activos
+	stark = checkAlive('172.22.200.101')
+	pepper = checkAlive('172.22.200.103')
+	jarvis = checkAlive('172.22.200.105')
+
+	# template
+	return template('static/pages/monitorizacion.tpl', usuario=usuario, stark=stark, pepper=pepper, jarvis=jarvis)
+
 
 @route('/backups')
 def backups():
@@ -99,27 +125,27 @@ def nuevo2():
 	nodos = request.forms.get('nodo')
 	comentario = request.forms.get('comentario')
 
-	# comprobacion de que la etiqueta no existe
+	# comprobación de que la etiqueta no existe
 	query = ("SELECT label FROM backups")
 	lista = []
 	for c in cursor:
 		if c == label:
 			redirect('/error')
 
-	# insercion de los datos de la nueva copia
+	# inserción de los datos de la nueva copia
 	add_backup = ("INSERT INTO backups VALUES (%s, %s, %s, %s, %s, %s)")
 	data_backup = (label, host, nodos, bucket, comentario,time.strftime("%d/%m/%Y %H:%M:%S") )
 	cursor.execute(add_backup, data_backup)
 	back_no = cursor.lastrowid
 	cnx.commit()
 
-	# segun el host que se haya indicado, la copia se hara en un servidor o en otro
+	# segun el host que se haya indicado, la copia se hará en un servidor o en otro
 	if host == 'stark':
 		ip = '172.22.200.101'
 	else:
 		ip = '172.22.200.103'
 
-	# si es sobre un nodo especifico...
+	# si es sobre un nodo específico...
 	if nodos != 'todos':
 		if bucket:
 			cad="sh /opt/couchbase/bin/cbbackup http://"+ip+":"+port+" "+backup_dir+" -u "+user+" -p "+passwd+" --single-node -b "+bucket
@@ -157,7 +183,7 @@ def restaurar2():
 	host = request.forms.get('host')
 
 	# si el host es stark, muestra los directorios desde los que se pueden hacer restauraciones
-	if host == stark:
+	if host = stark:
 		lista = commands.getstatusoutput("ssh -q ubuntu@172.22.200.101 'ls /home/ubuntu/backups'")
 	# muestra los directorios de pepper	
 	else: 
@@ -175,16 +201,16 @@ def restaurar2():
 		lis = x
 
 	# template
-	return template("static/pages/backups/restaurar2.tpl", usuario=usuario, dirs=lis, host=host)
+    return template("static/pages/backups/restaurar2.tpl", usuario=usuario, dirs=lis, host=host)
 
 @route('/restaurar3', method='post')
 def restaurar3():
 	# coger los datos del formulario anterior para generar el comando para la nueva restauracion
 	label = request.forms.get('label')        
    	host = request.forms.get('host')
-    	directorio = request.forms.get('dir')
-    	origen = request.forms.get('origen')
-    	destino = request.forms.get('destino')
+    directorio = request.forms.get('dir')
+    origen = request.forms.get('origen')
+    destino = request.forms.get('destino')
 	comentario = request.forms.get('comentario')
 
 	# comprobación de que la etiqueta no existe
@@ -196,23 +222,23 @@ def restaurar3():
 
 	# inserción de los datos de la nueva restauracion
 	add_restore = ("INSERT INTO restore VALUES (%s, %s, %s, %s, %s, %s)")
-    	data_restore = (label, host, directorio, origen, destino, comentario)
-    	cursor.execute(add_restore, data_restore)
-    	back_no = cursor.lastrowid
+    data_restore = (label, host, directorio, origen, destino, comentario)
+    cursor.execute(add_restore, data_restore)
+    back_no = cursor.lastrowid
 	cnx.commit()
     
 	# segun el host que se haya indicado, la restauracion se hará en un servidor o en otro
-    	if host == 'stark':
-        	ip = '172.22.200.101'
-   	else:
-     		ip = '172.22.200.103'
+    if host == 'stark':
+        ip = '172.22.200.101'
+    else:
+     	ip = '172.22.200.103'
 
-    	# si no se ha indicado un destino, éste será el mismo que el origen
-    	if not destino:
-        	cad = "sh /opt/couchbase/bin/cbrestore "+backup_dir+" http://"+ip+":"+port+" -b "+origen
-    	# si se ha indicado un directorio, ese será el que se utilice
-    	elif directorio:
-        	cad="sh /opt/couchbase/bin/cbrestore "+backup_dir+" "+directorio+" http://"+user+":"+passwd+"@"+ip+":"+port+" --bucket-source="+origen
+    # si no se ha indicado un destino, éste será el mismo que el origen
+    if not destino:
+        cad = "sh /opt/couchbase/bin/cbrestore "+backup_dir+" http://"+ip+":"+port+" -b "+origen
+    # si se ha indicado un directorio, ese será el que se utilice
+    elif directorio:
+        cad="sh /opt/couchbase/bin/cbrestore "+backup_dir+" "+directorio+" http://"+user+":"+passwd+"@"+ip+":"+port+" --bucket-source="+origen
         # si se ha indicado un destino, se añadirá al comando anterior 
         if destino:
            cad = cad+" --bucket-destination="+destino
@@ -226,16 +252,6 @@ def restaurar3():
 	# redirección a la página principal de las copias de seguridad
 	redirect('/backups')
 
-@route('/metrica')
-def metrica():
-	# se comprueba si los hosts están activos
-	stark = checkAlive('172.22.200.101')
-	pepper = checkAlive('172.22.200.103')
-	jarvis = checkAlive('172.22.200.105')
-
-	# template
-	return template('static/pages/monitorizacion/monitorizacion.tpl', usuario=usuario, stark=stark, pepper=pepper, jarvis=jarvis)
-
 @route('/stark')
 def stark():
 	# redireccion a zabbix
@@ -246,31 +262,10 @@ def pepper():
 	# redireccion a zabbix
 	redirect('http://jarvis.maria.org/zabbix')
 
-@route('/jarvis')
-def jarvis():
-	# ram total, libre y porcentaje
-	ram = psutil.virtual_memory()
-	ramTotal = human(ram.total)
-	ramAvail = human(ram.available)
-	ramPerc = ram.percent
-
-	# disco total, libre y porcentaje
-	disk = psutil.disk_usage('/')
-	diskTotal = human(disk.total)
-	diskAvail = human(disk.used)
-	diskPerc = disk.percent
-
-	# template
-	return template('static/pages/monitorizacion/monit-jarvis.tpl', usuario=usuario, diskPerc = diskPerc, ramPerc = ramPerc, diskTotal=diskTotal, diskAvail=diskAvail, ramAvail=ramAvail, ramTotal=ramTotal)	
-	
 @route('/docs')
 def docs():
 	# template
     return template('static/pages/docs.tpl', usuario=usuario)
-
-@route('/error')
-def error():
-	return template('static/pages/error.tpl', usuario=usuario)
 
 @route('/static/<filepath:path>')
 def server_static(filepath):
