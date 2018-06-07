@@ -9,7 +9,7 @@
         <div class="box-body">
           <form action="/nuevo2" method="post">
             <div class="form-group">
-              <label>Label</label>
+              <label>Label (al nombre se le añadirá detrás la fecha actual)</label>
               <input type="text" class="form-control" placeholder="Enter ..." name="label">
             </div>
             <div class="form-group">

@@ -13,9 +13,8 @@
             <div class="box-body table-responsive no-padding">
               <table class="table table-hover">
 <tr>
-                  <th>Label</th>
+                  <th>Label-fecha</th>
                   <th>Host</th>
-		  <th>Fecha</th>
 		  <th>Comentarios</th>
                 </tr>
 
@@ -23,7 +22,6 @@
   <tr>
 	<td>{{  lista[i][0] }}</td>
         <td>{{  lista[i][1] }}</td>
-        <td>{{  lista[i][5] }}</td>
         <td>{{  lista[i][4] }}</td>
 
   </tr>

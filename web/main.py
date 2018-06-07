@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 from bottle import *
 import requests
 from sys import argv
@@ -19,14 +16,13 @@ passwd = "marromang"
 port = "8091"
 
 # conexion a couchbase
-#from couchbase.cluster import Cluster
-#from couchbase.cluster import PasswordAuthenticator
-#cluster = Cluster('couchbase://172.22.200.101')
-#authenticator = PasswordAuthenticator('Administrator', 'marromang')
-#cluster.authenticate(authenticator)
-#bucket = cluster.open_bucket('beer-sample')
+from couchbase.cluster import Cluster
+from couchbase.cluster import PasswordAuthenticator
+cluster = Cluster('couchbase://172.22.200.101')
+authenticator = PasswordAuthenticator('Administrator', 'marromang')
+cluster.authenticate(authenticator)
+bucket = cluster.open_bucket('beer-sample')
 
-# cnx = connection.MySQLConnection(user='root', password='root',host='localhost',database='backups')
 cnx = mysql.connector.connect(user='root',password='root', database='backups')
 cursor = cnx.cursor()
 
@@ -99,16 +95,10 @@ def nuevo2():
 	nodos = request.forms.get('nodo')
 	comentario = request.forms.get('comentario')
 
-	# comprobacion de que la etiqueta no existe
-	query = ("SELECT label FROM backups")
-	lista = []
-	for c in cursor:
-		if c == label:
-			redirect('/error')
-
 	# insercion de los datos de la nueva copia
+	hora = time.strftime("%d/%m/%Y %H:%M:%S")
 	add_backup = ("INSERT INTO backups VALUES (%s, %s, %s, %s, %s, %s)")
-	data_backup = (label, host, nodos, bucket, comentario,time.strftime("%d/%m/%Y %H:%M:%S") )
+	data_backup = (label+"-"+hora, host, nodos, bucket, comentario,hora )
 	cursor.execute(add_backup, data_backup)
 	back_no = cursor.lastrowid
 	cnx.commit()
@@ -138,15 +128,12 @@ def nuevo2():
 	os.system("ssh ubuntu@"+ip+" "+cad)
 	#os.system("ssh ubuntu@172.22.200.101 "+cad)
 	
-	# para depuracion
-	print lista
-
-	# redireccion al indice de copias de seguridad, donde aparecerá la primera de la lista
+	# redireccion al indice de copias de seguridad, donde aparecera la primera de la lista
 	redirect("/backups")
 
 @route('/restaurar')
 def restaurar():
-	# obtención del host para luego, segun el elegido, mostrar unos directorios a restaurar u otros, que varian segun las copias realizadas.
+	# obtencion del host para luego, segun el elegido, mostrar unos directorios a restaurar u otros, que varian segun las copias realizadas.
 	host = request.forms.get('host')
 	
 	# template
@@ -175,7 +162,7 @@ def restaurar2():
 		lis = x
 
 	# template
-	return template("static/pages/backups/restaurar2.tpl", usuario=usuario, dirs=lis, host=host)
+    	return template("static/pages/backups/restaurar2.tpl", usuario=usuario, dirs=lis, host=host)
 
 @route('/restaurar3', method='post')
 def restaurar3():
@@ -187,33 +174,33 @@ def restaurar3():
     	destino = request.forms.get('destino')
 	comentario = request.forms.get('comentario')
 
-	# comprobación de que la etiqueta no existe
+	# comprobacion de que la etiqueta no existe
 	query = ("SELECT label FROM restore")
 	lista = []
 	for c in cursor:
 		if c == label:
 			redirect('/error')
 
-	# inserción de los datos de la nueva restauracion
+	# insercion de los datos de la nueva restauracion
 	add_restore = ("INSERT INTO restore VALUES (%s, %s, %s, %s, %s, %s)")
     	data_restore = (label, host, directorio, origen, destino, comentario)
     	cursor.execute(add_restore, data_restore)
     	back_no = cursor.lastrowid
 	cnx.commit()
     
-	# segun el host que se haya indicado, la restauracion se hará en un servidor o en otro
+	# segun el host que se haya indicado, la restauracion se hara en un servidor o en otro
     	if host == 'stark':
         	ip = '172.22.200.101'
-   	else:
+    	else:
      		ip = '172.22.200.103'
 
-    	# si no se ha indicado un destino, éste será el mismo que el origen
+    	# si no se ha indicado un destino, este sera el mismo que el origen
     	if not destino:
         	cad = "sh /opt/couchbase/bin/cbrestore "+backup_dir+" http://"+ip+":"+port+" -b "+origen
-    	# si se ha indicado un directorio, ese será el que se utilice
+    	# si se ha indicado un directorio, ese sera el que se utilice
     	elif directorio:
         	cad="sh /opt/couchbase/bin/cbrestore "+backup_dir+" "+directorio+" http://"+user+":"+passwd+"@"+ip+":"+port+" --bucket-source="+origen
-        # si se ha indicado un destino, se añadirá al comando anterior 
+        # si se ha indicado un destino, se concatenara con el comando anterior 
         if destino:
            cad = cad+" --bucket-destination="+destino
 	
@@ -223,12 +210,12 @@ def restaurar3():
 	# ejecucion del comando 
 	os.system("ssh ubuntu@"+ip+" "+cad)
 	
-	# redirección a la página principal de las copias de seguridad
+	# redireccion a la pagina principal de las copias de seguridad
 	redirect('/backups')
 
 @route('/metrica')
 def metrica():
-	# se comprueba si los hosts están activos
+	# se comprueba si los hosts estan activos
 	stark = checkAlive('172.22.200.101')
 	pepper = checkAlive('172.22.200.103')
 	jarvis = checkAlive('172.22.200.105')
@@ -266,12 +253,20 @@ def jarvis():
 @route('/docs')
 def docs():
 	# template
-    return template('static/pages/docs.tpl', usuario=usuario)
+    	return template('static/pages/docs.tpl', usuario=usuario)
 
 @route('/error')
 def error():
 	return template('static/pages/error.tpl', usuario=usuario)
 
+#@error(500)
+#def custom500(error):
+#    return 'my custom message'
+
+#@route("/test")
+#def index():
+#    abort("Boo!")
+	   
 @route('/static/<filepath:path>')
 def server_static(filepath):
     return static_file(filepath, root='static')  
