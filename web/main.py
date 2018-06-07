@@ -142,9 +142,9 @@ def restaurar():
 @route('/restaurar2', method='post')
 def restaurar2():
 	host = request.forms.get('host')
-
+	print host
 	# si el host es stark, muestra los directorios desde los que se pueden hacer restauraciones
-	if host == stark:
+	if host == 'stark':
 		lista = commands.getstatusoutput("ssh -q ubuntu@172.22.200.101 'ls /home/ubuntu/backups'")
 	# muestra los directorios de pepper	
 	else: 
@@ -168,7 +168,7 @@ def restaurar2():
 def restaurar3():
 	# coger los datos del formulario anterior para generar el comando para la nueva restauracion
 	label = request.forms.get('label')        
-   	host = request.forms.get('host')
+	host = request.forms.get('host')
     	directorio = request.forms.get('dir')
     	origen = request.forms.get('origen')
     	destino = request.forms.get('destino')
@@ -181,7 +181,7 @@ def restaurar3():
 		if c == label:
 			redirect('/error')
 
-	
+	print host
 	# insercion de los datos de la nueva restauracion
 	hora = time.strftime("%d/%m/%Y %H:%M:%S")
 	add_restore = ("INSERT INTO restore VALUES (%s, %s, %s, %s, %s, %s)")
@@ -191,14 +191,14 @@ def restaurar3():
 	cnx.commit()
     
 	# segun el host que se haya indicado, la restauracion se hara en un servidor o en otro
-    	if host == 'stark':
-        	ip = '172.22.200.101'
+    	if host == 'pepper':
+        	ip = '172.22.200.103'
     	else:
-     		ip = '172.22.200.103'
+     		ip = '172.22.200.101'
 
     	# si no se ha indicado un destino, este sera el mismo que el origen
     	if not destino:
-        	cad = "sh /opt/couchbase/bin/cbrestore "+backup_dir+" http://"+ip+":"+port+" -b "+origen
+        	cad = "sh /opt/couchbase/bin/cbrestore "+backup_dir+" -u "+user+" -p "+passwd+" http://"+ip+":"+port+" -b "+origen
     	# si se ha indicado un directorio, ese sera el que se utilice
     	elif directorio:
         	cad="sh /opt/couchbase/bin/cbrestore "+backup_dir+" "+directorio+" http://"+user+":"+passwd+"@"+ip+":"+port+" --bucket-source="+origen
