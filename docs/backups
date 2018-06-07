@@ -165,3 +165,71 @@ cbbackup -m diff http://example.com:8091 /backups/backup-1 -u Administrator -p p
 Copia acumulativa en un cluster
 cbbackup -m accu http://example.com:8091 /backups/backup-1 -u Administrator -p password
 
+
+### cbrestore ###
+Herramienta de restauracion de datos
+
+
+cbrestore [options] [backup-dir] [destination]
+
+Donde [backup-dir] es el directorio en el que se almacenaran los datos. Si no existe, se crea, siempre cuando el directorio padre exista.
+
+Aspectos a tener en cuenta:
+	Los datos escritos a un fichero en disco, se restauran en la RAM
+	Sobre los indices secundarios
+		Si la copia los contiene, tambien son parte del proceso de restauracion
+		Se almacenan sin los nombres de los nodos, que son pasados posteriormente (CREATE INDEX). Si almacena los id de os indices.
+		Cuando los indices ya etan restaurados, se tienen que construir a mano con BUILD INDEX.
+	Resolucion de conflictos
+		Por defecto, se comprueba que los datos no se hayan sobreescrito de manera incorrecta
+		A veces, hay documentos que no coincidean con el contenido de la copia si se han eliminado muy recientemente.
+
+La herramienta esta en /opt/couchbase/bin/cbrestore
+
+Opciones
+-h, --help 	ayuda
+-a, --add 	Used to not overwrite existing items in the destination. Use add instead of set.
+-b BUCKET_SOURCE, --bucket-source=BUCKET_SOURCE 	bucket de origen 
+-B BUCKET_DESTINATION, --bucket-destination=BUCKET_DESTINATION bucket de destino. Si no se especifica, coge el mismo que el origen
+--from-date=FROM_DATE 	fecha desde la que se quiere restaurar. Por defecto, restaura desde el primer dia.
+-i ID, --id=ID 	copiar elementos que contengan ese id
+-k KEY, --key=KEY 	copiar elementos cuya clave contengan la expresion regular que se indique
+-m MODE, --mode=MODE 
+-n, --dry-run 	no se hace copia, solo comprueba la conexion
+-u USERNAME, --username=USERNAME  usuario
+-p PASSWORD, --password=PASSWORD  contraseña
+--single-node para indicar que se hara en un solo nodo
+-t THREADS, --threads=THREADS 	hilos simultaneos para la transeferencia
+-v, --verbose 	nivel de los mensajes, a mas v, mas mensajes
+-x EXTRA, --extra=EXTRA 	para indicar configuraciones especiales
+	backoff_cap=10 	tiempo maximo de espera para volver a balancear la carga
+	batch_max_bytes=400000 	numero de bytes por trozo
+	batch_max_size=1000 	numero de documentos por trozo
+	cbb_max_mb=100000 	tamaño maximo a partir del cual se separaran los ficheros generads
+	conflict_resolve=1 	resolver conflictos con otros datos
+	data_only=0 	si vale 1, transfiere solo los datos de un fichero de backup
+	###design_doc_only=0 	For value 1, transfer only design documents from a backup file or cluster. Default: 0.
+	max_retry=10 	numero maximo de intenntos hasta parar
+	mcd_compatible=1 	si vale 0, muestra los datos completos
+	nmv_retry=1 	si vale 1, vuelve a intentar la transferencia tras un mensaje NOT_MY_VBUCKET 
+	recv_min_bytes=4096 	bytes de cada trama TCP/IP
+	rehash=0 	si vale 1, refresca el id de cada item
+	report=5 	trozos emviados antes de modificar la barra de estado en la consola
+	report_full=2000 	numero de tramas transmitidas antes de mostrar informacion del proceso en consola
+	seqno=0 	valor de inicio del numero de secuencia
+	try_xwm=1 	transferencia de datos con los metadatos
+	uncompress=0 	si esta en 1, restaura sin comprimir
+
+Ejemplos
+
+Basicos
+cbrestore ~/backup http://192.0.2.0:8091 -b travel-sample
+cbrestore ~/backup couchbase://192.0.2.0:8091 -b travel-sample
+cbrestore ~/backup memcached://192.0.2.0:11211 -b travel-sample		
+   
+Restauracion incremental entre 01-08-2014 y 03-08-2014
+Example for restoring data incrementally
+cbrestore -b travel-sample -B travel-sample --from-date=2014-08-01 --to-date=2014-08-03 ~/backup http://192.0.2.0:8091
+
+Restauracion sin resolucion de conflictos
+cbrestore -b travel-sample -B travel-sample -x conflict_resolve=0 ~/backup http://192.0.2.0:8091
