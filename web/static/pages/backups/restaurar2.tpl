@@ -13,6 +13,10 @@
               <input type="text" class="form-control" placeholder="Enter ..." name="label">
             </div>
             <div class="form-group">
+              <label>host</label>
+              <input type="text" class="form-control" placeholder={{ host }} name="host">
+            </div>
+            <div class="form-group">
               <label>Directorio</label>
               <select class="form-control" name="dir">
                 %for d in dirs:
