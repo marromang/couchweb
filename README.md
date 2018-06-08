@@ -49,3 +49,8 @@ Obviando los directorios y ficheros dedicados a estilos propios de la plantilla,
 - *jarvis.tpl*: muestra un breve resumen del estado de los discos y la RAM y nos da la opción de ver su zabbix.
 - *monitorizacion.tpl*: página principal de la parte de monitorización en la que se muestra un resumen de los hosts existentes, dando el estado u un resumen de cada host. Redirige todos los host al zabbix correspondiente y al resumen de jarvis.
 
+## Paqueteria
+***
+Para poder utilizar la web con el entorno virtual son necesarios los siquientes paquetes:
+	
+	apt install python-pip fping gcc python-virtualenv python-dev build-essential git apache2 mysql-server-5.6 php 
