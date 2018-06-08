@@ -10,10 +10,17 @@ import time
 
 # usuario activo en jarvis
 usuario = getpass.getuser()
+
+# directorio de las copias en los servidores
 backup_dir = "/home/ubuntu/backups"
+
+# credenciales de couchbase
 user = "Administrator"
 passwd = os.environ["CBPASS"]
+# puerto de couchbase
 port = "8091"
+
+# clave de mysql
 mypasswd = os.environ["MYSQLPASS"]
 
 # conexion a couchbase
@@ -24,6 +31,7 @@ authenticator = PasswordAuthenticator('Administrator', 'marromang')
 cluster.authenticate(authenticator)
 bucket = cluster.open_bucket('beer-sample')
 
+# conexion a mysql
 cnx = mysql.connector.connect(user='root',password=mypasswd, database='backups')
 cursor = cnx.cursor()
 
@@ -142,8 +150,9 @@ def restaurar():
 
 @route('/restaurar2', method='post')
 def restaurar2():
+	# coger el host del que se va a restaura
 	host = request.forms.get('host')
-	print host
+
 	# si el host es stark, muestra los directorios desde los que se pueden hacer restauraciones
 	if host == 'stark':
 		lista = commands.getstatusoutput("ssh -q ubuntu@172.22.200.101 'ls /home/ubuntu/backups'")
@@ -182,7 +191,6 @@ def restaurar3():
 		if c == label:
 			redirect('/error')
 
-	print host
 	# insercion de los datos de la nueva restauracion
 	hora = time.strftime("%d/%m/%Y %H:%M:%S")
 	add_restore = ("INSERT INTO restore VALUES (%s, %s, %s, %s, %s, %s)")
@@ -228,12 +236,12 @@ def metrica():
 
 @route('/stark')
 def stark():
-	# redireccion a zabbix
+	# redireccion a zabbix para el host stark
 	redirect('http://jarvis.maria.org/zabbix')
 
 @route('/pepper')
 def pepper():
-	# redireccion a zabbix
+	# redireccion a zabbix para el host pepper
 	redirect('http://jarvis.maria.org/zabbix')
 
 @route('/jarvis')
@@ -260,6 +268,7 @@ def docs():
 
 @route('/error')
 def error():
+	# template
 	return template('static/pages/error.tpl', usuario=usuario)
 
 #@error(500)
@@ -269,7 +278,8 @@ def error():
 #@route("/test")
 #def index():
 #    abort("Boo!")
-	   
+
+# contenido estatico	   
 @route('/static/<filepath:path>')
 def server_static(filepath):
     return static_file(filepath, root='static')  
