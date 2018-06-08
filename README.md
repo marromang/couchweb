@@ -1,8 +1,11 @@
 # couchweb
 ***
 Aplicación web para la gestión de las copias de seguridad y la monitorización del entorno creado para CouchBase.
+
 Está escrita en python usando el framework liger Bottle.
+
 Obviando los directorios y ficheros dedicados a estilos propios de la plantilla, la estructura de la aplicación es:
+
 	couchbase
 	├── LICENSE
 	├── README.md
