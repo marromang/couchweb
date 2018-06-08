@@ -3,33 +3,26 @@ couchbase
 ├── README.md
 ├── requirements.txt
 └── web
+	├── app.wsgi
+	├── footer.tpl
+	├── header.tpl
+	├── index.tpl
+	├── main.py
+	└── static
+		├── pages
+		│	├── backups
+		│	│	├── backups.tpl
+		│	│	├── nuevo2.tpl
+		│	│	├── nuevo.tpl
+		│	│	├── restaurar2.tpl
+		│	│	├── restaurar3.tpl
+		│	│	└── restaurar.tpl
+		│	├── docs.tpl
+		│	├── error.tpl
+		│	└── monitorización
+		│		├── jarvis.tpl
+		│		├── monit-jarvis.tpl
+		│		└── monitorizacion.tpl
+		└── bender.png
 
-web/
-├── app.wsgi
-├── footer.tpl
-├── header.tpl
-├── index.tpl
-├── main.py
-└── static
-
-web/static/pages/
-├── backups
-├── docs.tpl
-├── error.tpl
-├── layout
-├── monitorizacion
-└── UI
-
-web/static/pages/monitorizacion/
-├── jarvis.tpl
-├── monit-jarvis.tpl
-└── monitorizacion.tpl
-
-web/static/pages/backups/
-├── backups.tpl
-├── nuevo2.tpl
-├── nuevo.tpl
-├── restaurar2.tpl
-├── restaurar3.tpl
-└── restaurar.tpl
 

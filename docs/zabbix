@@ -47,3 +47,12 @@ create table bakcups
 	bucket varchar(25),
 	comentarios varchar(100)
 );
+
+
+Server=172.22.200.105
+Hostname=
+ListenPort=10050
+StartAgents=5
+EnableRemoteCommands=1
+DebugLevel=3
+Timeout=3
