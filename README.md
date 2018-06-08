@@ -56,3 +56,25 @@ Para poder utilizar la web con el entorno virtual son necesarios los siquientes 
 ## MySQL
 Para esta aplicacion hay que crear una base de datos llamada backups con dos tablas: backups y restore
 
+	create database backups;
+	
+	create table backups
+	(
+		label varchar(50),
+		host varchar(7),
+		nodos varchar(10),
+		bucket varchar(25),
+		fecha varchar(40),
+		comentarios varchar(100)
+	);
+
+	create table restore
+	(
+		label varchar(50),
+		host varchar(7),
+		directorio varchar(50),
+		origen varchar(25),
+		destino varchar(25),
+		comentarios varchar(100)
+	);
+
