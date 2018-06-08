@@ -12,18 +12,19 @@ import time
 usuario = getpass.getuser()
 backup_dir = "/home/ubuntu/backups"
 user = "Administrator"
-passwd = "marromang"
+passwd = os.environ["CBPASS"]
 port = "8091"
+mypasswd = os.environ["MYSQLPASS"]
 
 # conexion a couchbase
-#from couchbase.cluster import Cluster
-#from couchbase.cluster import PasswordAuthenticator
-#cluster = Cluster('couchbase://172.22.200.101')
-#authenticator = PasswordAuthenticator('Administrator', 'marromang')
-#cluster.authenticate(authenticator)
-#bucket = cluster.open_bucket('beer-sample')
+from couchbase.cluster import Cluster
+from couchbase.cluster import PasswordAuthenticator
+cluster = Cluster('couchbase://172.22.200.101')
+authenticator = PasswordAuthenticator('Administrator', 'marromang')
+cluster.authenticate(authenticator)
+bucket = cluster.open_bucket('beer-sample')
 
-cnx = mysql.connector.connect(user='root',password='root', database='backups')
+cnx = mysql.connector.connect(user='root',password=mypasswd, database='backups')
 cursor = cnx.cursor()
 
 # funcion para convertir los valores obtenidos con psutil a un formato mas real
