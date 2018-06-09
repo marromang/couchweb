@@ -237,12 +237,12 @@ def metrica():
 @route('/stark')
 def stark():
 	# redireccion a zabbix para el host stark
-	redirect('http://jarvis.maria.org/zabbix')
+	redirect('http://172.22.200.105:3000/dashboard/db/generic-node?orgId=1&var-server=172.22.200.101:9110')
 
 @route('/pepper')
 def pepper():
-	# redireccion a zabbix para el host pepper
-	redirect('http://jarvis.maria.org/zabbix')
+	# redireccion al panel de grafana para el host pepper
+	redirect('http://172.22.200.105:3000/dashboard/db/generic-node?orgId=1&var-server=172.22.200.103:9110')
 
 @route('/jarvis')
 def jarvis():

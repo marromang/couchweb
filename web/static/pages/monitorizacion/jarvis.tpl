@@ -61,7 +61,7 @@
       </div>
       <div class="box-body">
         <p>
-          <a class="btn bg-purple" href="http://jarvis.maria.org/zabbix">Zabbix</a>
+          <a class="btn bg-purple" href="http://172.22.200.105:3000/dashboard/db/generic-node?orgId=1&from=now-5m&to=now-1m&var-server=localhost:9100">Grafana</a>
         </p>
       </div>
     </div>
