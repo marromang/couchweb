@@ -101,10 +101,29 @@ Los archivos de la aplicación está en /var/www/html/couchweb/web, para facilit
 
 # Capturas y ejemplos
 ## Página de inicio
+Muestra el número de hosts totales, activos e inactivos.
 ![index](docs/img/1.png)
 
 ## Copias de seguridad
+Nos muestra las 10 últimas copias realizadas.
+![back1](docs/img/5.png)
+
+Al crear una nueva copia, nos muestra este formulario con los datos necesarios para generar el comando y ejecutarlo en el servidor correspondiente.
+![back2](docs/img/7.png)
+
+Si la copia se ha realiado correctamente, aparece la primera en la lista.
+![back3](docs/img/9.png)
+
+Para restaurar, primero necesitamos saber qué host es el que tiene los ficheros.
+![back4](docs/img/10.png)
+
+Una vez tiene el host, con este formulario genera el comando y lo ejecuta.
+![back5](docs/img/11.png)
 
 ## Métrica
+En esta página nos muestra los host que hay y cierta información útil como es estado.
+![metrica1](docs/img/3.png)
 
 ## Documentación
+Sitios de los que se ha sacado la documentación principal de la aplicación web.
+![docs](docs/img/2.png)
