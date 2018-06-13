@@ -121,7 +121,8 @@ Una vez tiene el host, con este formulario genera el comando y lo ejecuta.
 ![back5](docs/img/11.png)
 
 ## Métrica
-En esta página nos muestra los host que hay y cierta información útil como es estado.
+En esta página nos muestra los host que hay y cierta información útil como el estado.
+Al hacer click en el host nos manda a su correspondiente dashboard de grafana.
 ![metrica1](docs/img/3.png)
 
 ## Documentación
