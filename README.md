@@ -78,3 +78,33 @@ Para esta aplicacion hay que crear una base de datos llamada backups con dos tab
 		comentarios varchar(100)
 	);
 
+# Ejecucion de la aplicación
+Está montada con un entorno virtual por limpieza del equipo y para tenerlo todo  bien localizado. Al entorno lo he llamado v-couchweb y para activarlo:
+	
+	ubuntu@jarvis:~$ source v-couchweb/bin/activate
+	(v-couchweb) ubuntu@jarvis:~$ 
+
+Las claves de acceso a las bases de datos las he creado como variables en el sistema y el programa las busca por lo que hay que exportarlas:
+	
+		(v-couchweb) ubuntu@jarvis:/var/www/html/couchweb/web$ export CBPASS='pass'
+		(v-couchweb) ubuntu@jarvis:/var/www/html/couchweb/web$ export MYSQLPASS='pass'
+
+Siendo 'pass' la clave que hayamos puesto en las configuraciones
+
+Los archivos de la aplicación está en /var/www/html/couchweb/web, para facilitar la mejora de la integración con apache. Una vez en ese directorio, lanzamos la aplicación:
+	
+		(v-couchweb) ubuntu@jarvis:~$ cd /var/www/html/couchweb/web/
+		(v-couchweb) ubuntu@jarvis:/var/www/html/couchweb/web$ python main.py 
+		Bottle v0.12.13 server starting up (using WSGIRefServer())...
+		Listening on http://0.0.0.0:8081/
+		Hit Ctrl-C to quit.
+
+# Capturas y ejemplos
+## Página de inicio
+![index](docs/img/1.png)
+
+## Copias de seguridad
+
+## Métrica
+
+## Documentación
