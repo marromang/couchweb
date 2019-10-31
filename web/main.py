@@ -27,7 +27,7 @@ mypasswd = os.environ["MYSQLPASS"]
 from couchbase.cluster import Cluster
 from couchbase.cluster import PasswordAuthenticator
 cluster = Cluster('couchbase://172.22.200.101')
-authenticator = PasswordAuthenticator('Administrator', 'marromang')
+authenticator = PasswordAuthenticator('Administrator', passwd)
 cluster.authenticate(authenticator)
 bucket = cluster.open_bucket('beer-sample')
 
